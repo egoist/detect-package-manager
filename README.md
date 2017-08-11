@@ -6,7 +6,7 @@
 ## How does this work?
 
 1. When there's `yarn.lock` or `package-lock.json` in current working directory, it will skip other operations and directly resolves `yarn` or `npm`
-2. When there's no lockfile was found, it checks if `yarn` command is install. If so it resolves `yarn` otherwise `npm`
+2. When there's no lockfile was found, it checks if `yarn` command exists. If so it resolves `yarn` otherwise `npm`
 
 ## Install
 
