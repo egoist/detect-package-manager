@@ -1,6 +1,6 @@
 {
   "name": "detect-package-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detect which package manager you're using (yarn or npm)",
   "repository": {
     "url": "egoist/detect-package-manager",
