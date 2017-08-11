@@ -18,11 +18,17 @@ function hasGlobalYarn() {
 }
 
 function getTypeofLockFile(cwd = '.') {
+  if (cache.has('typeofLockFile')) {
+    return Promise.resolve(cache.get('typeofLockFile'))
+  }
+
   return Promise.all([
     pathExists(path.resolve(cwd, 'yarn.lock')),
     pathExists(path.resolve(cwd, 'package-lock.json'))
   ]).then(([isYarn, isNpm]) => {
-    return isYarn ? 'yarn' : isNpm ? 'npm' : null
+    const value = isYarn ? 'yarn' : isNpm ? 'npm' : null
+    cache.set('typeofLockFile', value)
+    return value
   })
 }
 
@@ -42,3 +48,5 @@ module.exports.npmVersion = () => {
   return execa('npm', ['--version'])
     .then(res => res.stdout)
 }
+
+module.exports.clearCache = () => cache.clear()
