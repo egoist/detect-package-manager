@@ -1,0 +1,31 @@
+{
+  "name": "detect-package-manager",
+  "version": "0.0.0",
+  "description": "Detect which package you&#39;re using (yarn or npm)",
+  "repository": {
+    "url": "egoist/detect-package-manager",
+    "type": "git"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "npm run lint && ava",
+    "lint": "xo"
+  },
+  "author": "egoist <0x142857@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "execa": "^0.8.0",
+    "path-exists": "^3.0.0"
+  },
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "eslint-config-rem": "^3.0.0",
+    "xo": "^0.18.0"
+  },
+  "xo": {
+    "extends": "rem"
+  }
+}
