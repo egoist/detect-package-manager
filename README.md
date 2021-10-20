@@ -5,9 +5,9 @@
 
 ## How does this work?
 
-1. When there's `yarn.lock` or `package-lock.json` in current working directory, it will skip other operations and directly resolves `yarn` or `npm`
-2. When there's no lockfile was found, it checks if `yarn` command exists. If so it resolves `yarn` otherwise `npm`
-3. Results are cached
+1. When there's `yarn.lock`, `package-lock.json`, or `pnpm-lock.yaml` in current working directory, it will skip other operations and directly resolve `yarn`, `npm`, or `pnpm`.
+2. When there's no lockfile found, it checks if `yarn` command exists. If so, it resolves `yarn` otherwise `npm`.
+3. Results are cached.
 
 ## Install
 
@@ -23,7 +23,7 @@ const detectPackageManager = require('detect-package-manager')
 detectPackageManager()
   .then(pm => {
     console.log(pm)
-    //=> 'yarn' or 'npm'
+    //=> 'yarn', 'npm', or 'pnpm'
   })
 ```
 
@@ -33,7 +33,7 @@ detectPackageManager()
 
 Return: `Promise<pm>`
 
-It returns a Promise resolving the name of package manager, could be either `npm` or `yarn`.
+It returns a Promise resolving the name of package manager, could be `npm`, `yarn`, or `pnpm`.
 
 #### opts
 
@@ -42,7 +42,7 @@ It returns a Promise resolving the name of package manager, could be either `npm
 Type: `string`<br>
 Default: `.`
 
-The directory to look up `yarn.lock` or `package-lock.json`.
+The directory to look up `yarn.lock`, `package-lock.json`, or `pnpm-lock.yaml`.
 
 ### detectPackageManager.npmVersion()
 

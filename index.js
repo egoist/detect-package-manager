@@ -24,9 +24,23 @@ function getTypeofLockFile(cwd = '.') {
 
   return Promise.all([
     pathExists(path.resolve(cwd, 'yarn.lock')),
-    pathExists(path.resolve(cwd, 'package-lock.json'))
-  ]).then(([isYarn, isNpm]) => {
-    const value = isYarn ? 'yarn' : isNpm ? 'npm' : null
+    pathExists(path.resolve(cwd, 'package-lock.json')),
+    pathExists(path.resolve(cwd, 'pnpm-lock.yaml')),
+  ]).then(([isYarn, isNpm, isPnpm]) => {
+    let value = null;
+
+    if (isYarn) {
+      value = 'yarn';
+    }
+
+    if (isNpm) {
+      value = 'npm';
+    }
+
+    if (isPnpm) {
+      value = 'pnpm';
+    }
+
     cache.set('typeofLockFile', value)
     return value
   })

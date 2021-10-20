@@ -11,6 +11,11 @@ test('in fixture which is using package-lock.json', async t => {
   t.is(pm, 'npm')
 })
 
+test('in fixture which is using pnpm-lock.yaml', async t => {
+  const pm = await dpm({ cwd: 'fixtures/pnpm-lock' })
+  t.is(pm, 'pnpm')
+})
+
 test('in fixture which is empty', async t => {
   const pm = await dpm({ cwd: 'fixtures/empty' })
   t.is(pm, 'yarn')
