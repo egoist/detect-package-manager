@@ -31,13 +31,9 @@ function getTypeofLockFile(cwd = '.') {
 
     if (isYarn) {
       value = 'yarn';
-    }
-
-    if (isNpm) {
+    } else if (isNpm) {
       value = 'npm';
-    }
-
-    if (isPnpm) {
+    } else if (isPnpm) {
       value = 'pnpm';
     }
 
