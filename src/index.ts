@@ -1,8 +1,9 @@
 import { promises as fs } from "fs";
 import { resolve } from "path";
-import execa from "execa";
+import child_process from "child_process"
 
 export type PM = "npm" | "yarn" | "pnpm";
+export const SEMVER_REGEX = /^\d+.\d+.\d+$/
 
 /**
  * Check if a path exists
@@ -27,9 +28,9 @@ function hasGlobalInstallation(pm: PM): Promise<boolean> {
     return Promise.resolve(cache.get(key));
   }
 
-  return execa(pm, ["--version"])
-    .then((res) => {
-      return /^\d+.\d+.\d+$/.test(res.stdout);
+  return exec_async(pm, "--version")
+    .then((stdout) => {
+      return SEMVER_REGEX.test(stdout);
     })
     .then((value) => {
       cache.set(key, value);
@@ -83,10 +84,23 @@ const detect = async ({ cwd }: { cwd?: string } = {}) => {
 
 export { detect };
 
-export function getNpmVersion(pm: PM) {
-  return execa(pm || "npm", ["--version"]).then((res) => res.stdout);
+export async function getNpmVersion(pm: PM = "npm") {
+  return exec_async(pm || "npm", "--version").then((stdout) => stdout);
 }
 
 export function clearCache() {
   return cache.clear();
+}
+
+async function exec_async(...commands: string[]): Promise<string> {
+  const command_string = commands.join(' ')
+
+  return new Promise((resolve, reject) => {
+    child_process.exec(command_string, (error, stdout, stderr) => {
+      if (error) return reject(error)
+      if (stderr) return reject(stderr.trim())
+
+      resolve(stdout.trim())
+    })
+  })
 }

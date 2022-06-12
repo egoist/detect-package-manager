@@ -1,6 +1,6 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
-import { detect } from "./src";
+import {detect, getNpmVersion, SEMVER_REGEX} from "./src";
 
 test("in this repo", async () => {
   const pm = await detect();
@@ -21,5 +21,11 @@ test("in fixture which is empty", async () => {
   const pm = await detect({ cwd: "fixtures/empty" });
   assert.is(pm, "yarn");
 });
+
+test("getNpmVersion returns a valid semver range for each package manager", async () => {
+  assert.match(await getNpmVersion(), SEMVER_REGEX)
+  assert.match(await getNpmVersion("yarn"), SEMVER_REGEX)
+  assert.match(await getNpmVersion("pnpm"), SEMVER_REGEX)
+})
 
 test.run();
