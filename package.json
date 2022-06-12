@@ -33,9 +33,6 @@
   },
   "author": "egoist <0x142857@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "execa": "^5.1.1"
-  },
   "devDependencies": {
     "@types/node": "^16.11.4",
     "ava": "^3.15.0",
