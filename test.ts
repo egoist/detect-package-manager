@@ -17,8 +17,8 @@ test("in fixture which is using pnpm-lock.yaml", async () => {
   assert.is(pm, "pnpm");
 });
 
-test("in fixture which is empty", async () => {
-  const pm = await detect({ cwd: "fixtures/empty" });
+test("in fixture which is empty (with monorepo disabled)", async () => {
+  const pm = await detect({ cwd: "fixtures/empty", monorepo: false });
   assert.is(pm, "yarn");
 });
 
