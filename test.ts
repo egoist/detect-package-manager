@@ -22,4 +22,24 @@ test("in fixture which is empty", async () => {
   assert.is(pm, "yarn");
 });
 
+test("in monorepo at one level", async () => {
+  const pm = await detect({ cwd: "fixtures/monorepo/first" });
+  assert.is(pm, "pnpm");
+});
+
+test("in monorepo at one level (with monorepo explicitly enabled)", async () => {
+  const pm = await detect({ cwd: "fixtures/monorepo/first" });
+  assert.is(pm, "pnpm");
+});
+
+test("in monorepo at two levels", async () => {
+  const pm = await detect({ cwd: "fixtures/monorepo/first/two" });
+  assert.is(pm, "pnpm");
+});
+
+test("in monorepo at one level (with monorepo disabled)", async () => {
+  const pm = await detect({ cwd: "fixtures/monorepo/first", monorepo: false });
+  assert.is(pm, "yarn");
+});
+
 test.run();
