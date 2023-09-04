@@ -17,6 +17,11 @@ test("in fixture which is using pnpm-lock.yaml", async () => {
   assert.is(pm, "pnpm");
 });
 
+test("in fixture which is using bun lockfile", async () => {
+  const pm = await detect({ cwd: "fixtures/bun-lock" });
+  assert.is(pm, "bun");
+});
+
 test("in fixture which is empty", async () => {
   const pm = await detect({ cwd: "fixtures/empty" });
   assert.is(pm, "yarn");
