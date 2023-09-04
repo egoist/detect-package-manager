@@ -67,7 +67,10 @@ function getTypeofLockFile(cwd = "."): Promise<PM | null> {
   });
 }
 
-const detect = async ({ cwd }: { cwd?: string } = {}) => {
+const detect = async ({
+  cwd,
+  includeGlobalBun,
+}: { cwd?: string; includeGlobalBun?: boolean } = {}) => {
   const type = await getTypeofLockFile(cwd);
   if (type) {
     return type;
@@ -75,7 +78,7 @@ const detect = async ({ cwd }: { cwd?: string } = {}) => {
   const [hasYarn, hasPnpm, hasBun] = await Promise.all([
     hasGlobalInstallation("yarn"),
     hasGlobalInstallation("pnpm"),
-    hasGlobalInstallation("bun"),
+    includeGlobalBun && hasGlobalInstallation("bun"),
   ]);
   if (hasYarn) {
     return "yarn";
