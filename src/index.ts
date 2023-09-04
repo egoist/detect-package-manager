@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import { resolve } from "path";
 import execa from "execa";
 
-export type PM = "npm" | "yarn" | "pnpm";
+export type PM = "npm" | "yarn" | "pnpm" | "bun";
 
 /**
  * Check if a path exists
@@ -47,13 +47,16 @@ function getTypeofLockFile(cwd = "."): Promise<PM | null> {
     pathExists(resolve(cwd, "yarn.lock")),
     pathExists(resolve(cwd, "package-lock.json")),
     pathExists(resolve(cwd, "pnpm-lock.yaml")),
-  ]).then(([isYarn, isNpm, isPnpm]) => {
+    pathExists(resolve(cwd, "bun.lockb")),
+  ]).then(([isYarn, isNpm, isPnpm, isBun]) => {
     let value: PM | null = null;
 
     if (isYarn) {
       value = "yarn";
     } else if (isPnpm) {
       value = "pnpm";
+    } else if (isBun) {
+      value = "bun";
     } else if (isNpm) {
       value = "npm";
     }
@@ -71,12 +74,16 @@ const detect = async ({ cwd }: { cwd?: string } = {}) => {
   const [hasYarn, hasPnpm] = await Promise.all([
     hasGlobalInstallation("yarn"),
     hasGlobalInstallation("pnpm"),
+    hasGlobalInstallation("bun"),
   ]);
   if (hasYarn) {
     return "yarn";
   }
   if (hasPnpm) {
     return "pnpm";
+  }
+  if (hasBun) {
+    return "bun";
   }
   return "npm";
 };
