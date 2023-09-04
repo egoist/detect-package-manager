@@ -34,7 +34,8 @@ function hasGlobalInstallation(pm: PM): Promise<boolean> {
     .then((value) => {
       cache.set(key, value);
       return value;
-    });
+    })
+    .catch(() => false);
 }
 
 function getTypeofLockFile(cwd = "."): Promise<PM | null> {
@@ -71,7 +72,7 @@ const detect = async ({ cwd }: { cwd?: string } = {}) => {
   if (type) {
     return type;
   }
-  const [hasYarn, hasPnpm] = await Promise.all([
+  const [hasYarn, hasPnpm, hasBun] = await Promise.all([
     hasGlobalInstallation("yarn"),
     hasGlobalInstallation("pnpm"),
     hasGlobalInstallation("bun"),
