@@ -66,11 +66,20 @@ function getTypeofLockFile(cwd = "."): Promise<PM | null> {
   });
 }
 
-const detect = async ({ cwd }: { cwd?: string } = {}) => {
-  const type = await getTypeofLockFile(cwd);
+const detect = async ({ cwd, monorepo }: { cwd?: string, monorepo?: false } = {}) => {
+  let type = await getTypeofLockFile(cwd);
   if (type) {
     return type;
+  } else if (monorepo !== false) {
+    for (let i = 1; i <= 3; i++) {
+      type = await getTypeofLockFile(cwd + "/../".repeat(i));
+
+      if (type) {
+        return type;
+      }
+    }
   }
+
   const [hasYarn, hasPnpm] = await Promise.all([
     hasGlobalInstallation("yarn"),
     hasGlobalInstallation("pnpm"),
