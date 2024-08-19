@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { resolve } from "path";
-import execa from "execa";
+import {x} from "tinyexec";
 
 export type PM = "npm" | "yarn" | "pnpm" | "bun";
 
@@ -21,21 +21,20 @@ const cache = new Map();
 /**
  * Check if a global pm is available
  */
-function hasGlobalInstallation(pm: PM): Promise<boolean> {
+async function hasGlobalInstallation(pm: PM): Promise<boolean> {
   const key = `has_global_${pm}`;
   if (cache.has(key)) {
-    return Promise.resolve(cache.get(key));
+    return cache.get(key);
   }
 
-  return execa(pm, ["--version"])
-    .then((res) => {
-      return /^\d+.\d+.\d+$/.test(res.stdout);
-    })
-    .then((value) => {
-      cache.set(key, value);
-      return value;
-    })
-    .catch(() => false);
+  try {
+    const res = await x(pm, ["--version"])
+    const value = /^\d+.\d+.\d+$/.test(res.stdout);
+    cache.set(key, value);
+    return value;
+  } catch(_err) {
+    return false;
+  }
 }
 
 function getTypeofLockFile(cwd = "."): Promise<PM | null> {
@@ -94,8 +93,10 @@ const detect = async ({
 
 export { detect };
 
-export function getNpmVersion(pm: PM) {
-  return execa(pm || "npm", ["--version"]).then((res) => res.stdout);
+export async function getNpmVersion(pm: PM) {
+  const res = await x(pm || "npm", ["--version"]);
+
+  return res.stdout;
 }
 
 export function clearCache() {
