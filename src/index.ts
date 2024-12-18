@@ -48,15 +48,16 @@ function getTypeofLockFile(cwd = "."): Promise<PM | null> {
     pathExists(resolve(cwd, "yarn.lock")),
     pathExists(resolve(cwd, "package-lock.json")),
     pathExists(resolve(cwd, "pnpm-lock.yaml")),
+    pathExists(resolve(cwd, "bun.lock")),
     pathExists(resolve(cwd, "bun.lockb")),
-  ]).then(([isYarn, isNpm, isPnpm, isBun]) => {
+  ]).then(([isYarn, isNpm, isPnpm, isBun, isBunBinary]) => {
     let value: PM | null = null;
 
     if (isYarn) {
       value = "yarn";
     } else if (isPnpm) {
       value = "pnpm";
-    } else if (isBun) {
+    } else if (isBun || isBunBinary) {
       value = "bun";
     } else if (isNpm) {
       value = "npm";
