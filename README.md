@@ -4,7 +4,7 @@
 
 ## How does this work?
 
-1. When there's `yarn.lock`, `package-lock.json`, `pnpm-lock.yaml`, or `bun.lockb` in current working directory, it will skip other operations and directly resolve `yarn`, `npm`, `pnpm`, or `bun`.
+1. When there's `yarn.lock`, `package-lock.json`, `pnpm-lock.yaml`, `bun.lockb`, or `nub.lock` in current working directory, it will skip other operations and directly resolve `yarn`, `npm`, `pnpm`, `bun`, or `nub`.
 2. When there's no lockfile found, it checks if `yarn`, `pnpm`, or `bun` command exists. If so, it resolves `yarn`, `pnpm`, or `bun` otherwise `npm`.
 3. Results are cached.
 

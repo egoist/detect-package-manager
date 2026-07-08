@@ -22,6 +22,11 @@ test("in fixture which is using bun lockfile", async () => {
   assert.is(pm, "bun");
 });
 
+test("in fixture which is using nub lockfile", async () => {
+  const pm = await detect({ cwd: "fixtures/nub-lock" });
+  assert.is(pm, "nub");
+});
+
 test("in fixture which is empty", async () => {
   const pm = await detect({ cwd: "fixtures/empty" });
   assert.is(pm, "yarn");
