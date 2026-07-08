@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import { resolve } from "path";
 import execa from "execa";
 
-export type PM = "npm" | "yarn" | "pnpm" | "bun";
+export type PM = "npm" | "yarn" | "pnpm" | "bun" | "nub";
 
 /**
  * Check if a path exists
@@ -49,7 +49,8 @@ function getTypeofLockFile(cwd = "."): Promise<PM | null> {
     pathExists(resolve(cwd, "package-lock.json")),
     pathExists(resolve(cwd, "pnpm-lock.yaml")),
     pathExists(resolve(cwd, "bun.lockb")),
-  ]).then(([isYarn, isNpm, isPnpm, isBun]) => {
+    pathExists(resolve(cwd, "nub.lock")),
+  ]).then(([isYarn, isNpm, isPnpm, isBun, isNub]) => {
     let value: PM | null = null;
 
     if (isYarn) {
@@ -58,6 +59,8 @@ function getTypeofLockFile(cwd = "."): Promise<PM | null> {
       value = "pnpm";
     } else if (isBun) {
       value = "bun";
+    } else if (isNub) {
+      value = "nub";
     } else if (isNpm) {
       value = "npm";
     }
